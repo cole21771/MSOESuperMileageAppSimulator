@@ -1,0 +1,14 @@
+{
+  "name": "msoesupermileageappsimulator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "simulator.js",
+  "scripts": {
+    "send-data": "node simulator.js"
+  },
+  "author": "Cole Abbeduto",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io-client": "^2.0.4"
+  }
+}
