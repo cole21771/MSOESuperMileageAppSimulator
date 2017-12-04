@@ -1,5 +1,5 @@
 const io = require('socket.io-client');
-/*const prompt = require('prompt');
+const prompt = require('prompt');
 
 console.log('0- localhost, 1- Digital Ocean');
 prompt.get(['choice'], (err, result) => {
@@ -16,13 +16,7 @@ function start(socket) {
     setInterval(() => {
         socket.emit('newData', createData());
     }, 250);
-}*/
-
-const socket = io('http://localhost:3000');
-
-setInterval(() => {
-    socket.emit('newData', createData());
-}, 250);
+}
 
 function createData () {
     let array = [];
