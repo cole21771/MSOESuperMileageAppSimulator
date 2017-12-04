@@ -4,7 +4,7 @@
   "description": "",
   "main": "simulator.js",
   "scripts": {
-    "send-data": "node simulator.js"
+    "start": "node simulator.js"
   },
   "author": "Cole Abbeduto",
   "license": "ISC",
