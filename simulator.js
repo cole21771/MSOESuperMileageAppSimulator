@@ -18,14 +18,15 @@ function start(url) {
     const socket = io(url);
     setInterval(() => {
         socket.emit('newData', createData());
-    }, 250);
+    }, 100);
 }
 
+let lastArray = new Array(numVars).fill(0);
 function createData () {
     let array = [];
     for (let i = 0; i < numVars; i++) {
-        array.push(Math.random() * 10);
+        array.push(Math.random() * lastArray[i] + Math.random() * lastArray[i] + Math.random());
     }
-
-    return array;
+    lastArray = array;
+    return JSON.stringify(array);
 }
