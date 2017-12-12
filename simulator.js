@@ -28,7 +28,7 @@ function promptForServer() {
     let options = "";
 
     servers.forEach((server, index, array) => {
-        options += index + "- " + server.name + (index === array.size - 1 ? "" : ", ");
+        options += index + "- " + server.name + (index === array.length - 1 ? "" : ", ");
     });
 
     console.log(options);
