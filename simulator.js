@@ -1,3 +1,6 @@
+const io = require('socket.io-client');
+const prompt = require('prompt');
+
 class Server {
     constructor(name, ip, port) {
         this.name = name;
@@ -10,8 +13,6 @@ class Server {
     }
 }
 
-const io = require('socket.io-client');
-const prompt = require('prompt');
 const numVars = 6;
 let servers;
 
