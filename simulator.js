@@ -14,6 +14,7 @@ class Server {
 }
 
 const numVars = 6;
+const delay = 250;
 let servers;
 
 function setupServers() {
@@ -42,11 +43,11 @@ setupServers();
 promptForServer();
 
 function start(url) {
-    console.log('Sending', numVars, 'random numbers to', url);
+    console.log('Sending', numVars, 'random numbers to', url, 'every', delay, 'ms');
     const socket = io(url);
     setInterval(() => {
         socket.emit('newData', createData());
-    }, 100);
+    }, delay);
 }
 
 let lastArray = new Array(numVars).fill(0);
