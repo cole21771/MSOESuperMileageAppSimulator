@@ -20,7 +20,7 @@ let servers;
 function setupServers() {
     servers = [
         new Server('localhost', 'http://localhost', '3000'),
-        new Server('Digital Ocean', 'http://138.197.98.186:3000', '3000'),
+        new Server('Digital Ocean', 'http://138.197.98.186', '3000'),
         new Server('Apartment Desktop', 'http://65.29.164.69', '3000')
     ];
 }
