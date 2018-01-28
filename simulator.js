@@ -16,6 +16,7 @@ class Server {
 const numVars = 6;
 const delay = 250;
 let servers;
+let startTime;
 
 function setupServers() {
     servers = [
@@ -43,20 +44,21 @@ setupServers();
 promptForServer();
 
 function start(url) {
-    console.log('Sending', numVars, 'random numbers to', url, 'every', delay, 'ms');
+    console.log('Sending', numVars, 'random numbers and time to', url, 'every', delay, 'ms');
     const socket = io(url);
+    startTime = Date.now();
     setInterval(() => {
         socket.emit('newData', createData());
     }, delay);
 }
 
 let lastArray = new Array(numVars).fill(0);
-
 function createData() {
     let array = [];
     for (let i = 0; i < numVars; i++) {
         array.push(Math.random() * lastArray[i] + Math.random() * (lastArray[i] / 1.3) + Math.random());
     }
+    array.push(Date.now() - startTime);
     lastArray = array;
     return JSON.stringify(array);
 }
