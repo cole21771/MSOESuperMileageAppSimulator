@@ -1,65 +1,58 @@
 const io = require('socket.io-client');
 const prompt = require('prompt');
 
-class Server {
-    constructor(name, ip, port) {
-        this.name = name;
-        this.ip = ip;
-        this.port = port;
-    }
-
-    getURL() {
-        return this.ip + ":" + this.port;
-    }
-}
-
-const numVars = 6;
+const serverMap = [
+['localhost', 'http://localhost:3000'],
+['Home', 'http://67.173.126.234:3000'],
+['Apartment Desktop', 'http://65.29.164.69:3000']
+];
+const numVars = 7;
 const delay = 250;
-let servers;
 let startTime;
 
-function setupServers() {
-    servers = [
-        new Server('localhost', 'http://localhost', 3000),
-		new Server('Home', 'http://67.173.126.234', 3000),
-        new Server('Digital Ocean', 'http://138.197.98.186', 3000),
-        new Server('Apartment Desktop', 'http://65.29.164.69', 3000)
-    ];
-}
-
 function promptForServer() {
-    let options = "";
+	return new Promise((resolve, reject) => {
+		console.log(serverMap.reduce((acc, pair, i, arr) => acc += i + "- " + pair[0] + (i++ !== arr.length - 1 ? ', ' : ''), ''));
 
-    servers.forEach((server, index, array) => {
-        options += index + "- " + server.name + (index === array.length - 1 ? "" : ", ");
-    });
-
-    console.log(options);
-
-    prompt.get(['choice'], (err, result) => {
-        start(servers[result['choice']].getURL());
-    });
+		prompt.get(['choice'], (err, result) => {
+			const choice = parseInt(result.choice);
+			if (err) {
+				reject(err);
+			} else if (isNaN(choice)) {
+				reject('Please input a number as your choice');
+			}
+			resolve(serverMap[choice]);
+		});
+	});
 }
 
-setupServers();
-promptForServer();
-
-function start(url) {
-    console.log('Sending', numVars, 'random numbers and time to', url, 'every', delay, 'ms');
-    const socket = io(url);
+function start(pair) {
+    console.log('Sending time and', numVars, 'random numbers to', pair[1], 'every', delay, 'ms');
+    const socket = io(pair[1]);
     startTime = Date.now();
+	
+	let data = new Array(numVars + 1).fill(0);
     setInterval(() => {
-        socket.emit('newData', createData());
+		data = createData(data);
+		const stringData = JSON.stringify(data);
+		console.log(stringData);
+        socket.emit('newData', stringData);
     }, delay);
 }
 
-let lastArray = new Array(numVars).fill(0);
-function createData() {
+function createData(lastData) {
+	lastData.shift();
     let array = [];
     for (let i = 0; i < numVars; i++) {
-        array.push(Math.random() * lastArray[i] + Math.random() * (lastArray[i] / 1.3) + Math.random());
+        array.push(Math.ceil(Math.random() * lastData[i] + Math.random() * (lastData[i] / 1.3) + Math.random()));
     }
-    array.push(Date.now() - startTime);
-    lastArray = array;
-    return JSON.stringify(array);
+	array.unshift(Date.now() - startTime);
+    
+    return array;
 }
+
+promptForServer()
+.then(start)
+.catch((err) => {
+	throw new Error(err);
+});
