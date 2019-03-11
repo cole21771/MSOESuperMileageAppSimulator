@@ -4,6 +4,7 @@ const prompt = require('prompt');
 const serverMap = [
 ['localhost', 'http://localhost:3000'],
 ['Home', 'http://67.173.126.234:3000'],
+['smv-live', 'http://smv-live.msoesae.org'],
 ['Apartment Desktop', 'http://65.29.164.69:3000']
 ];
 const numVars = 7;
